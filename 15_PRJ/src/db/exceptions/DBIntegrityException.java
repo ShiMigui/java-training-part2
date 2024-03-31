@@ -7,4 +7,7 @@ public class DBIntegrityException extends DBException {
 		super(msg);
 	}
 
+	public DBIntegrityException(String msg, String causedBy) {
+		super(msg, causedBy);
+	}
 }

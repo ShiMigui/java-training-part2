@@ -2,9 +2,11 @@ package application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import db.DB;
+import db.exceptions.DBIntegrityException;
 
 public class Program {
 
@@ -15,10 +17,9 @@ public class Program {
 		
 		try {
 			conn = DB.connection();
-			st = conn.prepareStatement("UPDATE seller SET BaseSalary = BaseSalary + ? WHERE (DepartmentId = ?)");
+			st = conn.prepareStatement("DELETE FROM department WHERE Id = ?;");
 			
-			st.setDouble(1, 200.0);
-			st.setInt(2, 2);
+			st.setInt(1, 4);
 			
 			int rowsAffected = st.executeUpdate();
 			if(rowsAffected > 0) {
@@ -27,8 +28,8 @@ public class Program {
 			else {
 				System.out.println("No rows affected!");
 			}	
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new DBIntegrityException(e.getMessage());
 		} finally {
 			DB.close(st);
 			DB.close();
